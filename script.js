@@ -56,22 +56,25 @@ function onAddItemSubmit(e) {
 }
 
 function addItemToDom(item) {
-    //create list item
+    // Create list item
     const li = document.createElement('li');
     li.appendChild(document.createTextNode(item));
 
-    const button = createButton('remove-item btn-link text-red');
-    li.appendChild(button);
+    // Create Remove Button
+    const removeButton = createButton('remove-item btn-link text-red', 'fa-solid fa-xmark');
+    li.appendChild(removeButton);
 
-    // const updateButton = createButton('update-item btn-link text-black', 'fa fa-pencil-square');
-    // li.appendChild(updateButton);
+    // Create Update Button
+    const updateButton = createButton('update-item btn-link text-green', 'fa-solid fa-pen');
+    li.appendChild(updateButton);
+
     itemList.appendChild(li);
 }
  
-function createButton(classes) {
+function createButton(classes, iconClasses) {
     const button = document.createElement('button');
     button.className = classes;
-    const icon = createIcon('fa-solid fa-xmark');
+    const icon = createIcon(iconClasses);
     button.appendChild(icon);
     return button;
 }
@@ -106,12 +109,13 @@ function getItemsFromStorage() {
 }
 
 function onClickItem(e) {
-    if(e.target.parentElement.classList.contains('remove-item')){
+    if (e.target.parentElement.classList.contains('remove-item')) {
+        // Handle Remove Item
         removeItem(e.target.parentElement.parentElement);
-    } else {
-        setItemToEdit(e.target);
+    } else if (e.target.parentElement.classList.contains('update-item')) {
+        // Handle Update Item
+        setItemToEdit(e.target.parentElement.parentElement);
     }
-
 }
 function setItemToEdit(item) {
     isEditMode = true ;
@@ -123,7 +127,7 @@ function setItemToEdit(item) {
     item.classList.add('edit-mode');
     formBtn.innerHTML = '<i class="fa-solid fa-pen"></i> Update Item';
     formBtn.style.backgroundColor = '#228B22';
-    itemInput.value = item.textContent;
+    itemInput.value = item.firstChild.textContent;
 
 }
 
